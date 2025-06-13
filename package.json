@@ -11,18 +11,13 @@
     "cli",
     "scaffold"
   ],
-  "author": "",
+  "author": "nithishgs",
   "license": "MIT",
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.10",
     "chalk": "^5.4.1",
     "execSync": "^1.0.2",
     "fs-extra": "^11.3.0",
-    "inquirer": "^12.6.3",
-    "tailwindcss": "^4.1.10"
+    "inquirer": "^12.6.3"
   },
-  "type": "module",
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.5.2"
-  }
+  "type": "module"
 }
