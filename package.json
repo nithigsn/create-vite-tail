@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "CLI to scaffold a Vite + Tailwind CSS project",
   "bin": {
-    "create-vite-tw": "./index.js"
+    "create-vite-tail": "./index.js"
   },
   "keywords": [
     "vite",
