@@ -2,8 +2,14 @@
   "name": "vite-tail",
   "version": "1.0.0",
   "description": "CLI to scaffold a Vite + Tailwind CSS project",
+  "scripts": {
+    "format": "prettier \"**/*.{ts,js,json,md}\" --write",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "build":"npx tsc"
+  },
   "bin": {
-    "create-vite-tail": "./index.js"
+    "create-vite-tail": "./dist/index.js"
   },
   "keywords": [
     "vite",
@@ -19,5 +25,17 @@
     "fs-extra": "^11.3.0",
     "inquirer": "^12.6.3"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
+    "eslint": "^9.29.0",
+    "globals": "^16.2.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.0"
+  }
 }
