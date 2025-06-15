@@ -6,7 +6,9 @@
     "format": "prettier \"**/*.{ts,js,json,md}\" --write",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "build":"npx tsc"
+    "build": "npx tsc",
+    "dev": "node dist/index.js",
+    "postbuild": "chmod +x dist/index.js"
   },
   "bin": {
     "create-vite-tail": "./dist/index.js"
