@@ -30,7 +30,7 @@ const App = () => {
   return (
     <div className='flex flex-col gap-y-2 justify-center items-center h-screen w-full '>
       <p className='text-xl font-medium'>Initialize a Production Ready Web with</p>
-      <div className="flex gap-x-2 items-center"><MaterialIconThemeReactTs />+<VscodeIconsFileTypeVite />+<VscodeIconsFileTypeTypescript /> <span className='text-[12px]'>SWC</span> +<DeviconTailwindcss /> <p></p></div>
+      <div className="flex gap-x-2 items-center"><MaterialIconThemeReactTs />+<VscodeIconsFileTypeVite />+<VscodeIconsFileTypeTypescript /> + <p className='text-[16px]'>SWC</p> +<DeviconTailwindcss /> <p></p></div>
       <div className="flex items-center gap-x-2">
         <p>Created by  </p>
         <a href="https://github.com/nithigsn" className='flex items-center gap-x-1.5' target='_blank' >nithigsn <FlowbiteGithubSolid /></a>

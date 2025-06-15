@@ -8,6 +8,7 @@ import path from 'path';
 
 import { createFolderStructure } from './helpers/createFolderStructure';
 import { APP_TSX } from './constants/constants';
+import installPrettier from './helpers/installPrettier';
 
 (async () => {
   console.log(chalk.green.bold('\n🌀 Vite + Tailwind CSS Project Generator\n'));
@@ -23,8 +24,15 @@ import { APP_TSX } from './constants/constants';
 
   const run = (cmd: string, opts: object = {}) => execSync(cmd, { stdio: 'inherit', ...opts });
 
+  // hides console log
+  const hide = (cmd: string, opts: object = {}) =>
+    execSync(cmd, {
+      stdio: ['inherit', 'ignore', 'inherit'], // stdin, stdout, stderr
+      ...opts,
+    });
+
   console.log(chalk.blue('\n🚧 Creating Vite project...'));
-  run(`npm create vite@latest ${projectName} -- --template react-swc-ts`);
+  hide(`npm create vite@latest ${projectName} -- --template react-swc-ts`);
 
   const projectPath = path.resolve(projectName);
   process.chdir(projectPath);
@@ -32,7 +40,7 @@ import { APP_TSX } from './constants/constants';
   console.log(chalk.blue('📦 Installing dependencies...'));
   run(`npm install`);
 
-  console.log(chalk.yellow('⚙️ Installing Tailwind CSS...'));
+  console.log(chalk.yellow('⚙️  Installing Tailwind CSS...'));
   run(`npm install tailwindcss @tailwindcss/vite`);
 
   console.log(chalk.yellow('🧹 Updating Vite config...'));
@@ -80,9 +88,13 @@ export default defineConfig({
   }
 
   await fs.outputFile(appPath, APP_TSX);
+  console.log(chalk.green('✅ Tailwind setup complete.'));
 
+  // Create Folder Structure ?
   await createFolderStructure(projectPath);
 
-  console.log(chalk.green('✅ Tailwind setup complete.'));
+  // Install Prettier ?
+  await installPrettier(run);
+
   console.log(chalk.cyan(`\n🚀 Project "${projectName}" is ready!\n`));
 })();
