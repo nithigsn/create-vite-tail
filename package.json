@@ -10,6 +10,14 @@
     "dev": "node dist/index.js",
     "postbuild": "chmod +x dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nithigsn/create-vite-tail"
+  },
+  "bugs": {
+    "url": "https://github.com/nithigsn/create-vite-tail/issues"
+  },
+  "homepage": "https://github.com/nithigsn/create-vite-tail#readme",
   "bin": {
     "create-vite-tail": "./dist/index.js"
   },
