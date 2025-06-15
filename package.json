@@ -1,6 +1,6 @@
 {
   "name": "vite-tail",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI to scaffold a Vite + Tailwind CSS project",
   "scripts": {
     "format": "prettier \"**/*.{ts,js,json,md}\" --write",
