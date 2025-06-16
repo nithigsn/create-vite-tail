@@ -3,26 +3,20 @@
 import { execSync } from 'child_process';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import fs from 'fs-extra';
 import path from 'path';
 
 import { createFolderStructure } from './helpers/createFolderStructure';
-import { APP_TSX } from './constants/constants';
 import installPrettier from './helpers/installPrettier';
+import installTailwindCSS from './helpers/installTailwindCSS';
+import installReactRouterDom from './helpers/installReactRouterDom';
+import installSonner from './helpers/installSonner';
+import { logger } from './utils/logger';
 
 (async () => {
   console.log(chalk.green.bold('\n🌀 Vite + Tailwind CSS Project Generator\n'));
 
-  const { projectName }: { projectName: string } = await inquirer.prompt([
-    {
-      type: 'input',
-      name: 'projectName',
-      message: 'Enter project name:',
-      default: 'vite-tailwind-app',
-    },
-  ]);
-
-  const run = (cmd: string, opts: object = {}) => execSync(cmd, { stdio: 'inherit', ...opts });
+  // show logs
+  // const run = (cmd: string, opts: object = {}) => execSync(cmd, { stdio: 'inherit', ...opts });
 
   // hides console log
   const hide = (cmd: string, opts: object = {}) =>
@@ -31,70 +25,78 @@ import installPrettier from './helpers/installPrettier';
       ...opts,
     });
 
-  console.log(chalk.blue('\n🚧 Creating Vite project...'));
+  // name of the project
+  let projectName: string;
+  // array of selected options
+  let features: string[];
+
+  try {
+    const responses = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'projectName',
+        message: 'Your Project Name?',
+        default: 'myapp',
+      },
+      {
+        type: 'checkbox',
+        name: 'features',
+        message: 'Choose features to include:',
+        choices: [
+          { name: 'Tailwind CSS', value: 'tailwind' },
+          { name: 'React Router DOM', value: 'router' },
+          { name: 'Sonner (Toast)', value: 'sonner' },
+          { name: 'Prettier', value: 'prettier' },
+          { name: 'Folder Structure', value: 'structure' },
+        ],
+      },
+    ]);
+
+    projectName = responses.projectName;
+    features = responses.features;
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(chalk.red('\n❌ Cancelled Operation'));
+      process.exit(0);
+    } else {
+      throw error;
+    }
+  }
+
+  console.log(chalk.blue('\n🚧 Creating '));
   hide(`npm create vite@latest ${projectName} -- --template react-swc-ts`);
 
   const projectPath = path.resolve(projectName);
   process.chdir(projectPath);
 
-  console.log(chalk.blue('📦 Installing dependencies...'));
-  run(`npm install`);
+  const shouldInclude = (key: string) => features.includes(key);
 
-  console.log(chalk.yellow('⚙️  Installing Tailwind CSS...'));
-  run(`npm install tailwindcss @tailwindcss/vite`);
-
-  console.log(chalk.yellow('🧹 Updating Vite config...'));
-  const viteConfigPath = path.join(projectPath, 'vite.config.ts');
-  await fs.writeFile(
-    viteConfigPath,
-    `import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc'
-import tailwindcss from '@tailwindcss/vite';
-
-export default defineConfig({
-    plugins: [react(), tailwindcss()],
-});
-`
-  );
-  console.log(chalk.green('✅ Vite config updated.'));
-
-  const cssPath = path.join(projectPath, 'src/index.css');
-  if (await fs.pathExists(cssPath)) {
-    await fs.remove(cssPath);
-    console.log(chalk.red('Removed default index.css'));
-  }
-  await fs.outputFile(
-    cssPath,
-    `@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-    @import "tailwindcss";
-
-  body {
-  min-height: 100vh;
-  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  background-color: #000000;
-  color: #ffffff;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-`
-  );
-
-  const appPath = path.join(projectPath, 'src/App.tsx');
-  if (await fs.pathExists(appPath)) {
-    await fs.remove(appPath);
+  // install react-router-dom
+  if (shouldInclude('router')) {
+    await installReactRouterDom(projectPath, hide);
   }
 
-  await fs.outputFile(appPath, APP_TSX);
-  console.log(chalk.green('✅ Tailwind setup complete.'));
+  // install tailwind
+  if (shouldInclude('tailwind')) {
+    await installTailwindCSS(projectPath, hide);
+  }
+  // install prettier
+  if (shouldInclude('prettier')) {
+    await installPrettier(hide);
+  }
 
-  // Create Folder Structure ?
-  await createFolderStructure(projectPath);
+  // install sonner
+  if (shouldInclude('sonner')) {
+    await installSonner(projectPath, hide);
+  }
 
-  // Install Prettier ?
-  await installPrettier(run);
+  // create folder structure
+  if (shouldInclude('structure')) {
+    await createFolderStructure(projectPath);
+  }
 
   console.log(chalk.cyan(`\n🚀 Project "${projectName}" is ready!\n`));
+  logger.info(`cd ${projectName}`);
+  logger.info(`npm run dev`);
+  process.exit(0);
 })();

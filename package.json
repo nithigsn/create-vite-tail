@@ -6,7 +6,7 @@
     "format": "prettier \"**/*.{ts,js,json,md}\" --write",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "build": "npx tsc",
+    "build": "tsup index.ts --format esm --target node18 --outDir dist",
     "dev": "node dist/index.js"
   },
   "repository": {
@@ -45,6 +45,7 @@
     "globals": "^16.2.0",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
+    "tsup": "^8.5.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.0"
   }
