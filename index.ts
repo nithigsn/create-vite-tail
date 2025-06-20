@@ -10,6 +10,7 @@ import installPrettier from './helpers/installPrettier';
 import installTailwindCSS from './helpers/installTailwindCSS';
 import installReactRouterDom from './helpers/installReactRouterDom';
 import installSonner from './helpers/installSonner';
+import installHusky from './helpers/installHusky';
 import { logger } from './utils/logger';
 
 (async () => {
@@ -47,6 +48,7 @@ import { logger } from './utils/logger';
           { name: 'React Router DOM', value: 'router' },
           { name: 'Sonner (Toast)', value: 'sonner' },
           { name: 'Prettier', value: 'prettier' },
+          { name: 'Husky', value: 'husky' },
           { name: 'Folder Structure', value: 'structure' },
         ],
       },
@@ -88,6 +90,11 @@ import { logger } from './utils/logger';
   // install sonner
   if (shouldInclude('sonner')) {
     await installSonner(projectPath, hide);
+  }
+
+  // install sonner
+  if (shouldInclude('husky')) {
+    await installHusky(projectPath, hide);
   }
 
   // create folder structure

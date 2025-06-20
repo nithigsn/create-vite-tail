@@ -7,7 +7,7 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "build": "tsup index.ts --format esm --target node18 --outDir dist",
-    "dev": "node dist/index.js"
+    "dev": " node dist/index.js"
   },
   "repository": {
     "type": "git",
